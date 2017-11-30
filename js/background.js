@@ -3,6 +3,12 @@
 var last_updated = 0;
 var feeds_last_updated = 0;
 var prefs_last_updated = 0;
+var test = browser;
+
+if (!test){
+	var browser;
+	browser = chrome;
+}
 
 function param_escape(arg) {
   if (typeof encodeURIComponent != 'undefined')
