@@ -3,6 +3,12 @@
 var last_updated = 0;
 var feeds_last_updated = 0;
 var prefs_last_updated = 0;
+var test = browser;
+
+if (!test){
+	var browser;
+	browser = chrome;
+}
 
 function param_escape(arg) {
   if (typeof encodeURIComponent != 'undefined')
@@ -108,10 +114,10 @@ function update() {
 
       if (!show_badge) badge.text = '';
 
-      chrome.browserAction.setBadgeBackgroundColor(badge_color);
-      chrome.browserAction.setBadgeText(badge);
-      chrome.browserAction.setTitle(title);
-      chrome.browserAction.setIcon(icon);
+      browser.browserAction.setBadgeBackgroundColor(badge_color);
+      browser.browserAction.setBadgeText(badge);
+      browser.browserAction.setTitle(title);
+      browser.browserAction.setIcon(icon);
     }
   };
 }
@@ -168,18 +174,18 @@ function is_site_url(url) {
 }
 
 function init() {
-  chrome.browserAction.onClicked.addListener(function() {
+  browser.browserAction.onClicked.addListener(function() {
     var site_url = localStorage['site_url'];
 
     if (site_url) {
       // try to find already opened tab
-      chrome.tabs.query({currentWindow: true}, function(tabs) {
+      browser.tabs.query({currentWindow: true}, function(tabs) {
 
         var found_existing = false;
 
         for (var i = 0, tab; tab = tabs[i]; i++) {
           if (tab.url && is_site_url(tab.url)) {
-            chrome.tabs.update(tab.id, {highlighted: true});
+            browser.tabs.update(tab.id, {highlighted: true});
             update();
             found_existing = true;
             return;
@@ -188,11 +194,11 @@ function init() {
 
         // check if current tab is newtab (only if not updated yet)
         if (!found_existing) {
-          chrome.tabs.query({currentWindow: true, active: true}, function(tabs) {
+          browser.tabs.query({currentWindow: true, active: true}, function(tabs) {
             if (tabs[0].url && is_newtab(tabs[0].url)) {
-              chrome.tabs.update(tabs[0].id, {url: site_url});
+              browser.tabs.update(tabs[0].id, {url: site_url});
             } else {
-              chrome.tabs.create({url: site_url});
+              browser.tabs.create({url: site_url});
             }
           });
         } // (if (!found_existing))
@@ -206,8 +212,8 @@ function init() {
   // `feeds_update_interval` and updates the `alarm` object when extension
   // preferences are saved.
   timeout();
-  chrome.alarms.create({periodInMinutes: 1});
-  chrome.alarms.onAlarm.addListener(function() {timeout();});
+  browser.alarms.create({periodInMinutes: 1});
+  browser.alarms.onAlarm.addListener(function() {timeout();});
 }
 
 init();

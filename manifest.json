@@ -1,13 +1,12 @@
 {
   "name": "Tiny Tiny RSS Notifier",
   "background": {
-    "scripts": ["js/background.js"],
-    "persistent": false
+    "scripts": ["js/background.js"]
   },
-  "version": "0.5.2",
+  "version": "0.6",
   "manifest_version": 2,
   "description": "This extension displays the number of unread articles in your Tiny Tiny RSS installation",
-  "options_page": "options.html",
+  "options_ui": {"page" : "options.html"},
   "icons": { "48": "images/icon_48.png", "128": "images/icon_128.png" },
   "browser_action": {
     "default_icon": "images/normal.png",
